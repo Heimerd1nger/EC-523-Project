@@ -1,0 +1,201 @@
+Files already downloaded and verified
+Files already downloaded and verified
+Unlearning by SCRUB
+0th iteration forget loss is 0.05297800898551941
+30th iteration forget loss is 0.050632741302251816
+60th iteration forget loss is 0.051305580884218216
+90th iteration forget loss is 0.05519706755876541
+120th iteration forget loss is 0.057635046541690826
+150th iteration forget loss is 0.05147361755371094
+180th iteration forget loss is 0.05394146591424942
+210th iteration forget loss is 0.05382630228996277
+240th iteration forget loss is 0.058261532336473465
+270th iteration forget loss is 0.053790926933288574
+300th iteration forget loss is 0.056721270084381104
+Forget acc: 0.9746 and Retain acc 0.9770444444444445 on 0th max-step epoch:
+Validation acc: 0.8616 on 0th max-step epoch:
+0th iteration retain loss is -0.02018529176712036
+30th iteration retain loss is -0.051034267991781235
+60th iteration retain loss is -0.07566705346107483
+90th iteration retain loss is -0.042154960334300995
+120th iteration retain loss is -0.04401080682873726
+150th iteration retain loss is -0.008597567677497864
+180th iteration retain loss is -0.0819893479347229
+210th iteration retain loss is -0.07936593890190125
+240th iteration retain loss is -0.09752562642097473
+270th iteration retain loss is -0.060091111809015274
+300th iteration retain loss is -0.07354080677032471
+330th iteration retain loss is -0.0954110324382782
+360th iteration retain loss is -0.06054389104247093
+390th iteration retain loss is -0.07837411761283875
+420th iteration retain loss is -0.0953686386346817
+450th iteration retain loss is -0.048595964908599854
+480th iteration retain loss is -0.04700806364417076
+510th iteration retain loss is -0.035452984273433685
+540th iteration retain loss is -0.09716373682022095
+570th iteration retain loss is 0.023167304694652557
+600th iteration retain loss is 0.0009455680847167969
+630th iteration retain loss is 0.02232203632593155
+660th iteration retain loss is -0.10045669227838516
+690th iteration retain loss is -0.06645079702138901
+Forget acc: 0.9808 and Retain acc 0.9885555555555555 on 0th min-step epoch:
+Validation acc: 0.8676 on 0th min-step epoch:
+0th iteration forget loss is 0.051267433911561966
+30th iteration forget loss is 0.050382938235998154
+60th iteration forget loss is 0.041025977581739426
+90th iteration forget loss is 0.03289182856678963
+120th iteration forget loss is 0.023747416213154793
+150th iteration forget loss is 0.020731797441840172
+180th iteration forget loss is 0.011734217405319214
+210th iteration forget loss is 0.012020732276141644
+240th iteration forget loss is 0.018074801191687584
+270th iteration forget loss is 0.01644652523100376
+300th iteration forget loss is 0.019865889102220535
+Forget acc: 0.1032 and Retain acc 0.10275555555555556 on 1th max-step epoch:
+Validation acc: 0.105 on 1th max-step epoch:
+0th iteration retain loss is 19.521121978759766
+30th iteration retain loss is 0.3440244495868683
+60th iteration retain loss is 0.06917786598205566
+90th iteration retain loss is 0.03382124751806259
+120th iteration retain loss is 0.002008214592933655
+150th iteration retain loss is -0.012890912592411041
+180th iteration retain loss is -0.006339848041534424
+210th iteration retain loss is 0.05714178830385208
+240th iteration retain loss is -0.03565962612628937
+270th iteration retain loss is 0.00022459030151367188
+300th iteration retain loss is -0.08736709505319595
+330th iteration retain loss is 0.03145941346883774
+360th iteration retain loss is -0.03402455896139145
+390th iteration retain loss is 0.016405925154685974
+420th iteration retain loss is -0.07286536693572998
+450th iteration retain loss is -0.03237059712409973
+480th iteration retain loss is -0.0036917105317115784
+510th iteration retain loss is -0.002730824053287506
+540th iteration retain loss is -0.053110890090465546
+570th iteration retain loss is -0.026776865124702454
+600th iteration retain loss is 0.006890319287776947
+630th iteration retain loss is -0.03587222844362259
+660th iteration retain loss is -0.06303010135889053
+690th iteration retain loss is -0.08689647167921066
+Forget acc: 0.9786 and Retain acc 0.9943555555555555 on 1th min-step epoch:
+Validation acc: 0.8716 on 1th min-step epoch:
+0th iteration forget loss is 0.04875873401761055
+30th iteration forget loss is 0.05285956338047981
+60th iteration forget loss is 0.05414038524031639
+90th iteration forget loss is 0.05195881053805351
+120th iteration forget loss is 0.051108162850141525
+150th iteration forget loss is 0.05202222615480423
+180th iteration forget loss is 0.0515102744102478
+210th iteration forget loss is 0.054837506264448166
+240th iteration forget loss is 0.046880386769771576
+270th iteration forget loss is 0.052270304411649704
+300th iteration forget loss is 0.04697326943278313
+Forget acc: 0.872 and Retain acc 0.8912444444444444 on 2th max-step epoch:
+Validation acc: 0.7852 on 2th max-step epoch:
+0th iteration retain loss is 0.5264295935630798
+30th iteration retain loss is -0.058503326028585434
+60th iteration retain loss is -0.0906979888677597
+90th iteration retain loss is -0.09575831890106201
+120th iteration retain loss is -0.09518235176801682
+150th iteration retain loss is -0.08978933095932007
+180th iteration retain loss is -0.08562362194061279
+210th iteration retain loss is -0.10128342360258102
+240th iteration retain loss is -0.09537795931100845
+270th iteration retain loss is -0.09108054637908936
+300th iteration retain loss is -0.09580966830253601
+330th iteration retain loss is -0.08246207982301712
+360th iteration retain loss is -0.09393719583749771
+390th iteration retain loss is -0.08757343143224716
+420th iteration retain loss is -0.07953859865665436
+450th iteration retain loss is -0.08707138150930405
+480th iteration retain loss is -0.09301242977380753
+510th iteration retain loss is -0.08727177232503891
+540th iteration retain loss is -0.07548445463180542
+570th iteration retain loss is -0.08875908702611923
+600th iteration retain loss is -0.07759435474872589
+630th iteration retain loss is -0.0859266072511673
+660th iteration retain loss is -0.0786987692117691
+690th iteration retain loss is -0.09072784334421158
+Forget acc: 0.98 and Retain acc 0.9989111111111111 on 2th min-step epoch:
+Validation acc: 0.8776 on 2th min-step epoch:
+0th iteration forget loss is 0.05218113586306572
+30th iteration forget loss is 0.05129164457321167
+60th iteration forget loss is 0.052315931767225266
+90th iteration forget loss is 0.038760315626859665
+120th iteration forget loss is 0.03915661573410034
+150th iteration forget loss is 0.009775499813258648
+180th iteration forget loss is 0.01813717558979988
+210th iteration forget loss is 0.012187544256448746
+240th iteration forget loss is 0.011545316316187382
+270th iteration forget loss is 0.004451342858374119
+300th iteration forget loss is 0.013435508124530315
+Forget acc: 0.104 and Retain acc 0.10308888888888888 on 3th max-step epoch:
+Validation acc: 0.1054 on 3th max-step epoch:
+0th iteration retain loss is 33.02638244628906
+30th iteration retain loss is 0.3444931209087372
+60th iteration retain loss is 0.05803849548101425
+90th iteration retain loss is 0.06349217891693115
+120th iteration retain loss is 0.009465768933296204
+150th iteration retain loss is -0.01926131546497345
+180th iteration retain loss is 0.10041901469230652
+210th iteration retain loss is 0.005070149898529053
+240th iteration retain loss is 0.004557527601718903
+270th iteration retain loss is 0.07292480021715164
+300th iteration retain loss is -0.023234032094478607
+330th iteration retain loss is -0.014078989624977112
+360th iteration retain loss is 0.04249732941389084
+390th iteration retain loss is 0.00568205863237381
+420th iteration retain loss is -0.009991906583309174
+450th iteration retain loss is -0.04697747901082039
+480th iteration retain loss is -0.0764121487736702
+510th iteration retain loss is 0.06765145808458328
+540th iteration retain loss is -0.08250067383050919
+570th iteration retain loss is -0.033524855971336365
+600th iteration retain loss is -0.033808737993240356
+630th iteration retain loss is -0.052320633083581924
+660th iteration retain loss is -0.015830546617507935
+690th iteration retain loss is -0.04538367688655853
+Forget acc: 0.9604 and Retain acc 0.9901555555555556 on 3th min-step epoch:
+Validation acc: 0.8628 on 3th min-step epoch:
+0th iteration forget loss is 0.04892662912607193
+30th iteration forget loss is 0.05112652853131294
+60th iteration forget loss is 0.04990358278155327
+90th iteration forget loss is 0.04695862531661987
+120th iteration forget loss is 0.04600100964307785
+150th iteration forget loss is 0.03910023346543312
+180th iteration forget loss is 0.04054113104939461
+210th iteration forget loss is 0.042609747499227524
+240th iteration forget loss is 0.03225453570485115
+270th iteration forget loss is 0.01992262527346611
+300th iteration forget loss is 0.018777787685394287
+Forget acc: 0.18 and Retain acc 0.1802 on 4th max-step epoch:
+Validation acc: 0.1824 on 4th max-step epoch:
+0th iteration retain loss is 11.461008071899414
+30th iteration retain loss is 0.24274420738220215
+60th iteration retain loss is -0.05193677544593811
+90th iteration retain loss is -0.004894480109214783
+120th iteration retain loss is 0.005306832492351532
+150th iteration retain loss is 0.058307014405727386
+180th iteration retain loss is 0.03490257263183594
+210th iteration retain loss is -0.016829736530780792
+240th iteration retain loss is -0.05247320979833603
+270th iteration retain loss is -0.08286786824464798
+300th iteration retain loss is -0.02555382251739502
+330th iteration retain loss is -0.08746680617332458
+360th iteration retain loss is -0.051178134977817535
+390th iteration retain loss is -0.07461816072463989
+420th iteration retain loss is -0.026768438518047333
+450th iteration retain loss is -0.0725434273481369
+480th iteration retain loss is -0.09149167686700821
+510th iteration retain loss is -0.06857873499393463
+540th iteration retain loss is -0.07498416304588318
+570th iteration retain loss is -0.06558986008167267
+600th iteration retain loss is -0.09457042813301086
+630th iteration retain loss is -0.0074102431535720825
+660th iteration retain loss is -0.05926547572016716
+690th iteration retain loss is -0.08057276904582977
+Forget acc: 0.9588 and Retain acc 0.9952666666666666 on 4th min-step epoch:
+Validation acc: 0.861 on 4th min-step epoch:
+list of model accuracy on forget set is [0.9746, 0.9808, 0.1032, 0.9786, 0.872, 0.98, 0.104, 0.9604, 0.18, 0.9588]
+list of model accuracy on retain set is [0.9770444444444445, 0.9885555555555555, 0.10275555555555556, 0.9943555555555555, 0.8912444444444444, 0.9989111111111111, 0.10308888888888888, 0.9901555555555556, 0.1802, 0.9952666666666666]
+list of mia is [0.5712999999999999, 0.5681999999999999, 0.49050000000000005, 0.5667, 0.5388, 0.5614, 0.49169999999999997, 0.5609, 0.49660000000000004, 0.5591]

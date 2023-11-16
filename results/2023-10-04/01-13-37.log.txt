@@ -1,0 +1,42 @@
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel
+unlearn acc on retain is 0.9943111111111111
+unlearn acc on forget is 0.957
+unlearn acc on valid is 0.8796
+The MIA has an accuracy of 0.556 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel
+unlearn acc on retain is 0.9957555555555555
+unlearn acc on forget is 0.9608
+unlearn acc on valid is 0.88
+The MIA has an accuracy of 0.555 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel
+unlearn acc on retain is 0.9953555555555555
+unlearn acc on forget is 0.9694
+unlearn acc on valid is 0.876
+The MIA has an accuracy of 0.561 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel
+unlearn acc on retain is 0.9955555555555555
+unlearn acc on forget is 0.9776
+unlearn acc on valid is 0.8792
+The MIA has an accuracy of 0.563 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel
+unlearn acc on retain is 0.9964444444444445
+unlearn acc on forget is 0.9718
+unlearn acc on valid is 0.8812
+The MIA has an accuracy of 0.557 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel
+unlearn acc on retain is 0.9963333333333333
+unlearn acc on forget is 0.9754
+unlearn acc on valid is 0.879
+The MIA has an accuracy of 0.558 on forgotten vs unseen images

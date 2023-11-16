@@ -1,0 +1,45 @@
+Files already downloaded and verified
+Files already downloaded and verified
+size of the forget lodaer is 40
+size of the retain lodaer is 352
+the size of the forget set is 5000
+num of unlearn epoch is 1
+Retain set accuracy: 99.8%
+Test set accuracy: 88.3%
+Forget set accuracy: 99.4%
+Hard set accuracy: 100.0%
+Easy set accuracy: 98.7%
+num of unlearn epoch is 3
+Retain set accuracy: 100.0%
+Test set accuracy: 88.5%
+Forget set accuracy: 99.2%
+Hard set accuracy: 100.0%
+Easy set accuracy: 98.4%
+num of unlearn epoch is 5
+Retain set accuracy: 100.0%
+Test set accuracy: 88.4%
+Forget set accuracy: 99.2%
+Hard set accuracy: 99.8%
+Easy set accuracy: 98.6%
+num of unlearn epoch is 7
+Retain set accuracy: 100.0%
+Test set accuracy: 88.5%
+Forget set accuracy: 99.2%
+Hard set accuracy: 99.8%
+Easy set accuracy: 98.6%
+num of unlearn epoch is 9
+Retain set accuracy: 100.0%
+Test set accuracy: 88.2%
+Forget set accuracy: 99.0%
+Hard set accuracy: 99.6%
+Easy set accuracy: 98.3%
+num of unlearn epoch is 11
+Retain set accuracy: 100.0%
+Test set accuracy: 88.4%
+Forget set accuracy: 98.8%
+Hard set accuracy: 99.3%
+Easy set accuracy: 98.2%
+
+hard
+Hard_acc = [1.0, 1.0, 0.998, 0.998, 0.996, 0.993]
+Esay_acc = [0.987, 0.984, 0.986, 0.986, 0.983, 0.982]

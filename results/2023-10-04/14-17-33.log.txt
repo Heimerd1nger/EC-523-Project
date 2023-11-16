@@ -1,0 +1,49 @@
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel with top 2 less confident samples per batch
+unlearn acc on retain is 0.13633333333333333
+unlearn acc on forget is 0.137
+unlearn acc on valid is 0.1414
+The MIA has an accuracy of 0.517 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel with top 4 less confident samples per batch
+unlearn acc on retain is 0.16597777777777778
+unlearn acc on forget is 0.1684
+unlearn acc on valid is 0.162
+The MIA has an accuracy of 0.508 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel with top 8 less confident samples per batch
+unlearn acc on retain is 0.21306666666666665
+unlearn acc on forget is 0.2192
+unlearn acc on valid is 0.1994
+The MIA has an accuracy of 0.497 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel with top 16 less confident samples per batch
+unlearn acc on retain is 0.21915555555555555
+unlearn acc on forget is 0.2342
+unlearn acc on valid is 0.2066
+The MIA has an accuracy of 0.498 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel with top 32 less confident samples per batch
+unlearn acc on retain is 0.3463333333333333
+unlearn acc on forget is 0.336
+unlearn acc on valid is 0.322
+The MIA has an accuracy of 0.511 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel with top 64 less confident samples per batch
+unlearn acc on retain is 0.22386666666666666
+unlearn acc on forget is 0.219
+unlearn acc on valid is 0.2072
+The MIA has an accuracy of 0.515 on forgotten vs unseen images
+Files already downloaded and verified
+Files already downloaded and verified
+Simple unlearning by relabel with top 128 less confident samples per batch
+unlearn acc on retain is 0.9947777777777778
+unlearn acc on forget is 0.9932
+unlearn acc on valid is 0.8894
+The MIA has an accuracy of 0.579 on forgotten vs unseen images
