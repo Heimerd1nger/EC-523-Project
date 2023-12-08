@@ -4,5 +4,5 @@
 for kd_T in {1..10}
 do
    echo "Running with kd_T=${kd_T}"
-   python main.py --kd_T ${kd_T} --sgda_epochs 10 --msteps 10
+   python3 main.py --checkpoints --kd_T ${kd_T} --bs 128 --sgda_learning_rate 0.005 --unlearning_method "SCRUB"
 done

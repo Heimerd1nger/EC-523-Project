@@ -120,7 +120,7 @@ if __name__ == '__main__':
     retain_loader, forget_loader, val_loader,test_loader,train_loader = get_starter_dataset()
     _ = [print(len(i.dataset) )for i in get_starter_dataset()]
     n_class = 10
-    epochs = 40
+    epochs = 100
     lr = 0.1
     momentum = 0.9
     weight_decay = 5e-4

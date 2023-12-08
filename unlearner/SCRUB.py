@@ -98,13 +98,15 @@ def train_distill(is_starter, epoch, train_loader, module_list, criterion_list, 
     kd_losses = AverageMeter()
     top1 = AverageMeter()
     top1_f =  AverageMeter()
+    num_batches = len(train_loader)
 
 
     for idx, data in enumerate(train_loader):
         ## subsampling
-        if  opt.sub_sample!=0 and split == "minimize":
-            num_batches = len(data_loader)
-
+        if  opt.sub_sample!=0.0 and split == "minimize":
+            if (idx+1) == int(num_batches*opt.sub_sample):
+                print(idx+1)
+                break
 
 
         if is_starter:
@@ -265,7 +267,7 @@ def unlearning_SCRUB(net, retain, forget, validation, is_starter,args):
     acc_rs.append(acc_r)
     acc_fs.append(acc_f)
     acc_vs.append(acc_v)
-    torch.save(checkpoints,f"checkpoints/scrub/scrub-model_epoch_{args.sgda_epochs}_lr_{args.sgda_learning_rate}_temp_{args.kd_T}.pth")
+    torch.save(checkpoints,f"checkpoints/scrub/scrub-model_epoch_{args.sgda_epochs}_lr_{args.sgda_learning_rate}_temp_{args.kd_T}_subsamp_{args.sub_sample}.pth")
     model_s.load_state_dict(checkpoints)
     model_s.eval()
     return model_s,acc_rs,acc_fs,acc_vs

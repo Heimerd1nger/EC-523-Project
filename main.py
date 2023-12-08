@@ -22,6 +22,7 @@ from util.util import calculate_accuracy
 from train_checkpoint import get_starter_dataset
 
 from unlearner.SCRUB import unlearning_SCRUB
+from unlearner.Finetune import unlearning_finetuning
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 class CustomStream:
@@ -39,32 +40,46 @@ class CustomStream:
 
 
 def run(**kwargs):
+    seed = 42
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)    
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
     args = arg_parser.parse_args()
     print(args)
 
     # writer = SummaryWriter()
-    retain_loader, forget_loader, val_loader,test_loader,_ = get_starter_dataset()
+    retain_loader, forget_loader, val_loader,test_loader,_ = get_starter_dataset(batch_size=256,bs_f=args.bs,bs_r=256)
     n_class = 10
     net = resnet18(weights=None, num_classes=n_class)
     weights_pretrained = torch.load('checkpoints/pre-train-model_epoch_40_lr_0.1_momentum_0.9_weightdecay_0.0005.pth', map_location=DEVICE)
+    # weights_pretrained = torch.load('weights_resnet18_cifar10.pth', map_location=DEVICE)
+
     net.load_state_dict(weights_pretrained)
     net.to(DEVICE)
-    model_s,acc_rs,acc_fs,acc_vs = unlearning_SCRUB(net,retain_loader,forget_loader,val_loader,is_starter=True,args=args)
+    if args.unlearning_method == "SCRUB":
+        model_s,acc_rs,acc_fs,acc_vs = unlearning_SCRUB(net,retain_loader,forget_loader,val_loader,is_starter=True,args=args)
+    elif args.unlearning_method == "finetuning":
+        model_s,acc_rs,acc_fs,acc_vs = unlearning_finetuning(net,retain_loader,forget_loader,val_loader,args=args)
+    else:
+        pass
+
     print(f'acc on retain {acc_rs}')
     print(f'acc on valid {acc_vs}')
     print(f'acc on forget {acc_fs}')
-    # plot 
-    indices = list(range(0,len(acc_rs)))
-    plt.plot(indices, acc_rs, marker='*', color=u'#1f77b4', alpha=1, label='retain-set')
-    plt.plot(indices, acc_fs, marker='o', color=u'#ff7f0e', alpha=1, label='forget-set')
-    plt.plot(indices, acc_vs, marker='^', color=u'#2ca02c',alpha=1, label='validation-set')
-    plt.legend(prop={'size': 14})
-    plt.tick_params(labelsize=12)
-    plt.xlabel('ep',size=14)
-    plt.ylabel('acc',size=14)
-    plt.grid()
-    plt.savefig(f"plots/SCRUB-epoch-{args.sgda_epochs}-Temp-{args.kd_T}-lr-{args.sgda_learning_rate}-bn-{args.sub_sample}.png")
-    plt.show()
+    # # plot 
+    # indices = list(range(0,len(acc_rs)))
+    # plt.plot(indices, acc_rs, marker='*', color=u'#1f77b4', alpha=1, label='retain-set')
+    # plt.plot(indices, acc_fs, marker='o', color=u'#ff7f0e', alpha=1, label='forget-set')
+    # plt.plot(indices, acc_vs, marker='^', color=u'#2ca02c',alpha=1, label='validation-set')
+    # plt.legend(prop={'size': 14})
+    # plt.tick_params(labelsize=12)
+    # plt.xlabel('ep',size=14)
+    # plt.ylabel('acc',size=14)
+    # plt.grid()
+    # plt.savefig(f"plots/SCRUB-epoch-{args.sgda_epochs}-Temp-{args.kd_T}-lr-{args.sgda_learning_rate}-bn-{args.sub_sample}.png")
+    # plt.show()
     
     # MIA
     # forget_losses = compute_losses(net, forget_loader)
