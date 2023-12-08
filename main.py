@@ -17,12 +17,11 @@ from datetime import datetime
 
 # from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
-# from torch.utils.tensorboard import SummaryWriter
-from util.util import get_starter_dataset,calculate_accuracy,compute_losses,simple_mia
+# from util.util import get_starter_dataset,calculate_accuracy
+from util.util import calculate_accuracy
+from train_checkpoint import get_starter_dataset
 
-from unlearner.random_label import unlearning_rdn
 from unlearner.SCRUB import unlearning_SCRUB
-from unlearner.benchmark import unlearning_finetuning
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 class CustomStream:
@@ -44,10 +43,10 @@ def run(**kwargs):
     print(args)
 
     # writer = SummaryWriter()
-    retain_loader, forget_loader, val_loader,test_loader = get_starter_dataset(128,bs_f=128,bs_r=128)
+    retain_loader, forget_loader, val_loader,test_loader,_ = get_starter_dataset()
     n_class = 10
     net = resnet18(weights=None, num_classes=n_class)
-    weights_pretrained = torch.load('weights_resnet18_cifar10.pth', map_location=DEVICE)
+    weights_pretrained = torch.load('checkpoints/pre-train-model_epoch_40_lr_0.1_momentum_0.9_weightdecay_0.0005.pth', map_location=DEVICE)
     net.load_state_dict(weights_pretrained)
     net.to(DEVICE)
     model_s,acc_rs,acc_fs,acc_vs = unlearning_SCRUB(net,retain_loader,forget_loader,val_loader,is_starter=True,args=args)

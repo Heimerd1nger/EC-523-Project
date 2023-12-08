@@ -1,2 +1,6 @@
 data/
+plots/
+results/
 checkpoints/
+retrain_weights_resnet18_cifar10.pth
+weights_resnet18_cifar10.pth

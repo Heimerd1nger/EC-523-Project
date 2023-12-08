@@ -6,7 +6,7 @@ from torch import optim
 from torch.utils.data import DataLoader
 from torchvision.models import resnet18
 import torch.nn.functional as F
-from util.util import calculate_accuracy,immediate_mia, AverageMeter, accuracy
+from util.util import calculate_accuracy, AverageMeter, accuracy
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # manual random seed is used for dataset partitioning
@@ -22,15 +22,15 @@ def param_dist(model, swa_model, p):
     return p * dist
 
 
-def adjust_learning_rate(epoch, opt, optimizer):
-    """Sets the learning rate to the initial LR decayed by decay rate every steep step"""
-    steps = np.sum(epoch > np.asarray(opt.lr_decay_epochs))
-    new_lr = opt.sgda_learning_rate
-    if steps > 0:
-        new_lr = opt.sgda_learning_rate * (opt.lr_decay_rate ** steps)
-        for param_group in optimizer.param_groups:
-            param_group['lr'] = new_lr
-    return new_lr
+# def adjust_learning_rate(epoch, opt, optimizer):
+#     """Sets the learning rate to the initial LR decayed by decay rate every steep step"""
+#     steps = np.sum(epoch > np.asarray(opt.lr_decay_epochs))
+#     new_lr = opt.sgda_learning_rate
+#     if steps > 0:
+#         new_lr = opt.sgda_learning_rate * (opt.lr_decay_rate ** steps)
+#         for param_group in optimizer.param_groups:
+#             param_group['lr'] = new_lr
+#     return new_lr
     
 
 class dotdict(dict):
@@ -63,7 +63,6 @@ def validate(val_loader, model, criterion, opt, quiet=False):
 
     with torch.no_grad():
         for idx, (input, target) in enumerate(val_loader):
-
             input = input.float()
             if torch.cuda.is_available():
                 input = input.cuda()
@@ -74,9 +73,9 @@ def validate(val_loader, model, criterion, opt, quiet=False):
             loss = criterion(output, target)
 
             # measure accuracy and record loss
-            acc1 = accuracy(output, target, topk=(1,))
+            acc1 = accuracy(output, target)
             losses.update(loss.item(), input.size(0))
-            top1.update(acc1[0], input.size(0))
+            top1.update(acc1, input.size(0))
     return top1.avg, losses.avg
 
 
@@ -102,6 +101,12 @@ def train_distill(is_starter, epoch, train_loader, module_list, criterion_list, 
 
 
     for idx, data in enumerate(train_loader):
+        ## subsampling
+        if  opt.sub_sample!=0 and split == "minimize":
+            num_batches = len(data_loader)
+
+
+
         if is_starter:
             inputs, targets = data
         else:
@@ -128,13 +133,13 @@ def train_distill(is_starter, epoch, train_loader, module_list, criterion_list, 
         loss = loss + param_dist(model_s, swa_model, opt.smoothing)
 
         if split == "minimize" and not quiet:
-            acc1 = accuracy(logit_s, targets, topk=(1,))
+            acc1 = accuracy(logit_s, targets)
             losses.update(loss.item(), inputs.size(0))
-            top1.update(acc1[0], inputs.size(0))
+            top1.update(acc1, inputs.size(0))
         elif split == "maximize" and not quiet:
-            accf = accuracy(logit_s, targets, topk=(1,))
+            accf = accuracy(logit_s, targets)
             kd_losses.update(loss.item(), inputs.size(0))
-            top1_f.update(accf[0], inputs.size(0))
+            top1_f.update(accf, inputs.size(0))
 
 
         # ===================backward=====================
@@ -151,6 +156,7 @@ def train_distill(is_starter, epoch, train_loader, module_list, criterion_list, 
 
 
 def unlearning_SCRUB(net, retain, forget, validation, is_starter,args):
+
     """Unlearning by SCRUB.
 
     Fine-tuning is a very simple algorithm that trains using only
@@ -175,8 +181,8 @@ def unlearning_SCRUB(net, retain, forget, validation, is_starter,args):
     acc_rs = []
     acc_fs = []
     acc_vs = []
-    
-    
+    checkpoints = None 
+    diff = 1.0
     model_t = copy.deepcopy(net)
     model_s = net
     
@@ -187,21 +193,7 @@ def unlearning_SCRUB(net, retain, forget, validation, is_starter,args):
         1 - beta) * averaged_model_parameter + beta * model_parameter
     swa_model = torch.optim.swa_utils.AveragedModel(
         model_s, avg_fn=avg_fn)
-    # add args
-    # args = dotdict({})
-    # args.sgda_epochs = 7
-    # args.sgda_learning_rate = 0.0005
-    # args.lr_decay_epochs = [3,5,9]
-    # args.lr_decay_rate = 0.1
-    # args.sgda_weight_decay = 5e-4
-    # args.sgda_momentum = 0.9
-    # args.kd_T = 4
-    # args.gamma = 0.99
-    # args.alpha = 0.001
-    # args.smoothing = 0.0
-    # args.msteps = 7
-    # args.sstart = 10
-    
+
     module_list = nn.ModuleList([])
     module_list.append(model_s)
     trainable_list = nn.ModuleList([])
@@ -216,13 +208,16 @@ def unlearning_SCRUB(net, retain, forget, validation, is_starter,args):
     criterion_list.append(criterion_cls)    # classification loss
     criterion_list.append(criterion_div)    # KL divergence loss, original knowledge distillation
     criterion_list.append(criterion_kd)     # other knowledge distillation loss
+
+
     optimizer = optim.SGD(trainable_list.parameters(),
                           lr=args.sgda_learning_rate,
                           momentum=args.sgda_momentum,
                           weight_decay=args.sgda_weight_decay)
+
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, T_max=args.sgda_epochs)
-    
+
     #teacher
     module_list.append(model_t)
     
@@ -238,9 +233,10 @@ def unlearning_SCRUB(net, retain, forget, validation, is_starter,args):
         acc_r, loss_r = validate(retain, model_s, criterion_cls, args, True)
         acc_f, loss_f = validate(forget, model_s, criterion_cls, args, True)
         acc_v, loss_v = validate(validation, model_s, criterion_cls, args, True)
-        acc_rs.append(acc_r.item())
-        acc_fs.append(acc_f.item())
-        acc_vs.append(acc_v.item())
+
+        acc_rs.append(acc_r)
+        acc_fs.append(acc_f)
+        acc_vs.append(acc_v)
         if epoch <= args.msteps:
             maximize_loss = 0
             forget_acc = 0
@@ -252,15 +248,24 @@ def unlearning_SCRUB(net, retain, forget, validation, is_starter,args):
         train_acc, train_loss = train_distill(is_starter, epoch, retain, module_list, criterion_list, optimizer, args, "minimize",swa_model=swa_model)
         scheduler.step()
 
+        # REWIND
+        if args.checkpoints:
+            if abs(acc_f-acc_v) < diff:
+                checkpoints = copy.deepcopy(model_s.state_dict())
+                diff = abs(acc_f-acc_v)
+                print(diff)
+
         # if epoch >= args.sstart:
         #     swa_model.update_parameters(model_s)
+
         print ("maximize loss: {:.2f}\t minimize loss: {:.2f}\t train_acc: {:.2f}\t forget_acc: {:.2f}".format(maximize_loss, train_loss, train_acc, forget_acc))
     acc_r, _ = validate(retain, model_s, criterion_cls, args, True)
     acc_f, _ = validate(forget, model_s, criterion_cls, args, True)
     acc_v, _ = validate(validation, model_s, criterion_cls, args, True)
-    acc_rs.append(acc_r.item())
-    acc_fs.append(acc_f.item())
-    acc_vs.append(acc_v.item())
-
+    acc_rs.append(acc_r)
+    acc_fs.append(acc_f)
+    acc_vs.append(acc_v)
+    torch.save(checkpoints,f"checkpoints/scrub/scrub-model_epoch_{args.sgda_epochs}_lr_{args.sgda_learning_rate}_temp_{args.kd_T}.pth")
+    model_s.load_state_dict(checkpoints)
     model_s.eval()
     return model_s,acc_rs,acc_fs,acc_vs

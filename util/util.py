@@ -2,7 +2,10 @@ import os
 import requests
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+
 from sklearn import linear_model, model_selection
+from collections import Counter
 
 import torch
 from torch import nn
@@ -17,9 +20,18 @@ from torchvision.utils import make_grid
 from torchvision.models import resnet18
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
+from sklearn.metrics import confusion_matrix
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-# manual random seed is used for dataset partitioning
+
+
+
+def label_distribution(data_loader):
+    class_counts = Counter()
+    for _, labels in data_loader:
+        class_counts.update( [label.item() for label in labels])
+    return class_counts
+
 # to ensure reproducible results across runs
 def subloader_kmeans(net,forget_loader,cluster=2):
     batch_size = 128
@@ -76,7 +88,7 @@ def subloader(net,forget_loader,exp=False,mode=None):
 
 
 
-def get_starter_dataset(batch_size=128,bs_f=16,bs_r=64):
+def get_starter_dataset(batch_size=256,bs_f=256,bs_r=256):
     '''Get the CIFAR-10 starter dataset'''
     RNG = torch.Generator().manual_seed(42)
     normalize = transforms.Compose(
@@ -204,7 +216,7 @@ def simple_mia(sample_loss, members, n_splits=10, random_state=0):
         attack_model, sample_loss, members, cv=cv, scoring="accuracy"
     )
 
-def immediate_mia(net,forget_loader,test_loader,n_splits=10, random_state=0):
+def standard_mia(net,forget_loader,test_loader,n_splits=10, random_state=0):
     forget_losses = compute_losses(net, forget_loader)
     test_losses = compute_losses(net, test_loader)
     np.random.shuffle(forget_losses)
@@ -236,19 +248,126 @@ class AverageMeter(object):
         self.avg = self.sum / self.count
 
 
-def accuracy(output, target, topk=(1,)):
-    """Computes the accuracy over the k top predictions for the specified values of k"""
-    with torch.no_grad():
-        maxk = max(topk)
-        batch_size = target.size(0)
+# def accuracy(output, target):
+#     """Computes the accuracy over the k top predictions for the specified values of k"""
+#     with torch.no_grad():
+#         maxk = max(topk)
+#         batch_size = target.size(0)
 
-        _, pred = output.topk(maxk, 1, True, True)
-        pred = pred.t()
-        correct = pred.eq(target.view(1, -1).expand_as(pred))
+#         _, pred = output.topk(maxk, 1, True, True)
+#         pred = pred.t()
+#         correct = pred.eq(target.view(1, -1).expand_as(pred))
 
-        res = []
-        for k in topk:
-            correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
-            res.append(correct_k.mul_(100.0 / batch_size))
-        return res[0]
+#         res = []
+#         for k in topk:
+#             correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
+#             res.append(correct_k.mul_(100.0 / batch_size))
+#         return res[0]
     
+def accuracy(model_outputs, targets):
+
+    _, predicted = torch.max(model_outputs.data, 1)
+    
+    # Count the number of correct predictions
+    correct_predictions = (predicted == targets).sum().item()
+    
+    # Calculate accuracy
+    accuracy = correct_predictions / targets.size(0) # Assuming targets is not batched
+    return accuracy
+
+######################################## INFLUENCE FUNCTION ###############################################
+# computes average gradient of the full dataset
+def compute_full_grad(model, device, data_loader, loss_fn, lam=0):
+    full_grad = None
+    model.zero_grad()
+    for batch_idx, (data, target) in enumerate(data_loader):
+        data, target = data.to(device), target.to(device)
+        loss_with_reg(model, data, target, loss_fn, lam)
+        grad = params_to_vec(model.parameters(), grad=True)
+        if full_grad is None:
+            full_grad = grad * data.size(0) / len(data_loader.dataset)
+        else:
+            full_grad += grad * data.size(0) / len(data_loader.dataset)
+        model.zero_grad()
+    param_vec = params_to_vec(model.parameters())
+    return full_grad, param_vec
+
+def params_to_vec(parameters, grad=False):
+    vec = []
+    for param in parameters:
+        if grad:
+            vec.append(param.grad.view(1, -1))
+        else:
+            vec.append(param.data.view(1, -1))
+    return torch.cat(vec, dim=1).squeeze()
+
+def vec_to_params(vec, parameters):
+    param = []
+    for p in parameters:
+        size = p.view(1, -1).size(1)
+        param.append(vec[:size].view(p.size()))
+        vec = vec[size:]
+    return param
+
+def batch_grads_to_vec(parameters):
+    N = parameters[0].shape[0]
+    vec = []
+    for param in parameters:
+        vec.append(param.view(N,-1))
+    return torch.cat(vec, dim=1)
+
+def batch_vec_to_grads(vec, parameters):
+    grads = []
+    for param in parameters:
+        size = param.view(param.size(0), -1).size(1)
+        grads.append(vec[:, :size].view_as(param))
+        vec = vec[:, size:]
+    return grads
+
+
+
+
+######################################## Visualization ###############################################
+def plot_confusion_matrix(model, dataloader, figsize=(10, 7), cmap='Blues', font='Arial', fontsize=12):
+    """
+    Plots the confusion matrix for the given model and dataloader.
+
+    Parameters:
+    - model: The pre-trained model to evaluate.
+    - dataloader: DataLoader containing the dataset to evaluate the model on.
+    - figsize: Tuple representing the figure size (width, height).
+    - cmap: Color map for the confusion matrix.
+    - font: Font family for the plot text.
+    - fontsize: Font size for labels and title.
+    """
+    # Ensure the model is in evaluation mode
+    model.eval()
+
+    true_labels = []
+    predictions = []
+
+    # Iterate over the dataloader and collect predictions
+    with torch.no_grad():  # Turn off gradients for evaluation
+        for inputs, labels in dataloader:
+            outputs = model(inputs)
+            _, predicted = torch.max(outputs.data, 1)
+
+            true_labels.extend(labels.tolist())
+            predictions.extend(predicted.tolist())
+
+    # Compute the confusion matrix
+    cm = confusion_matrix(true_labels, predictions)
+
+    # Plotting
+    plt.figure(figsize=figsize)
+    sns.set(font_scale=1.2)  # Scale for seaborn
+    sns.heatmap(cm, annot=True, fmt='d', cmap=cmap)
+    
+    # Set the font
+    plt.rc('font', family=font)
+
+    # Labeling the plot
+    plt.xlabel('Predicted Labels', fontsize=fontsize)
+    plt.ylabel('True Labels', fontsize=fontsize)
+    plt.title('Confusion Matrix', fontsize=fontsize + 2)
+    plt.show()
