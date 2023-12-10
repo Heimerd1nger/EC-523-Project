@@ -11,8 +11,11 @@ from util.util import calculate_accuracy, AverageMeter, accuracy
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # manual random seed is used for dataset partitioning
 # to ensure reproducible results across runs
-RNG = torch.Generator().manual_seed(42)
-
+seed = 42
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)    
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 
 def param_dist(model, swa_model, p):
     #This is from https://github.com/ojus1/SmoothedGradientDescentAscent/blob/main/SGDA.py

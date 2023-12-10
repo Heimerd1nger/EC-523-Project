@@ -15,8 +15,6 @@ def parse_args():
     # influence func - woodfisher
     # parser.add_argument("--alpha_wf", default=0.2, type=float, help="unlearn noise")
 
-
-
     # Finetuning 
 
     # SCRUB

@@ -23,6 +23,7 @@ from train_checkpoint import get_starter_dataset
 
 from unlearner.SCRUB import unlearning_SCRUB
 from unlearner.Finetune import unlearning_finetuning
+from unlearner.Finetune import unlearning_ng
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 class CustomStream:
@@ -63,36 +64,24 @@ def run(**kwargs):
     elif args.unlearning_method == "finetuning":
         model_s,acc_rs,acc_fs,acc_vs = unlearning_finetuning(net,retain_loader,forget_loader,val_loader,args=args)
     else:
-        pass
+        model_s,acc_rs,acc_fs,acc_vs = unlearning_ng(net,retain_loader,forget_loader,val_loader,args=args)
 
     print(f'acc on retain {acc_rs}')
     print(f'acc on valid {acc_vs}')
     print(f'acc on forget {acc_fs}')
-    # # plot 
-    # indices = list(range(0,len(acc_rs)))
-    # plt.plot(indices, acc_rs, marker='*', color=u'#1f77b4', alpha=1, label='retain-set')
-    # plt.plot(indices, acc_fs, marker='o', color=u'#ff7f0e', alpha=1, label='forget-set')
-    # plt.plot(indices, acc_vs, marker='^', color=u'#2ca02c',alpha=1, label='validation-set')
-    # plt.legend(prop={'size': 14})
-    # plt.tick_params(labelsize=12)
-    # plt.xlabel('ep',size=14)
-    # plt.ylabel('acc',size=14)
-    # plt.grid()
-    # plt.savefig(f"plots/SCRUB-epoch-{args.sgda_epochs}-Temp-{args.kd_T}-lr-{args.sgda_learning_rate}-bn-{args.sub_sample}.png")
-    # plt.show()
+    # plot 
+    indices = list(range(0,len(acc_rs)))
+    plt.plot(indices, acc_rs, marker='*', color=u'#1f77b4', alpha=1, label='retain-set')
+    plt.plot(indices, acc_fs, marker='o', color=u'#ff7f0e', alpha=1, label='forget-set')
+    plt.plot(indices, acc_vs, marker='^', color=u'#2ca02c',alpha=1, label='validation-set')
+    plt.legend(prop={'size': 14})
+    plt.tick_params(labelsize=12)
+    plt.xlabel('ep',size=14)
+    plt.ylabel('acc',size=14)
+    plt.grid()
+    plt.savefig(f"plots/{args.unlearning_method}-epoch-{args.sgda_epochs}-Temp-{args.kd_T}-lr-{args.sgda_learning_rate}-bn-{args.sub_sample}.png")
+    plt.show()
     
-    # MIA
-    # forget_losses = compute_losses(net, forget_loader)
-    # test_losses = compute_losses(net, test_loader)
-    # np.random.shuffle(forget_losses)
-    # forget_losses = forget_losses[: len(test_losses)]
-    # assert len(test_losses) == len(forget_losses)
-    # samples_mia = np.concatenate((test_losses, forget_losses)).reshape((-1, 1))
-    # labels_mia = [0] * len(test_losses) + [1] * len(forget_losses)
-    # mia_scores = simple_mia(samples_mia, labels_mia)
-    # print(
-    #     f"The MIA has an accuracy of {mia_scores.mean():.3f} on forgotten vs unseen images"
-    # )
 
 if __name__ == '__main__':
 
