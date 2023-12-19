@@ -15,7 +15,7 @@ To download and set up the pre-trained and re-trained SCRUB models in your local
 ```python3
 python3 train_checkpoints.py
 ```
-Performing Unlearning
+## Performing Unlearning
 After obtaining the pre-trained model, use the following commands to perform unlearning:
 
 SCRUB Method:
@@ -34,7 +34,7 @@ Negative Gradient Method:
 python3 main.py --checkpoints --sgda_learning_rate 0.006 --unlearning_method "negative" --sgda_epochs 5
 ```
 
-Hyperparameter Tuning
+## Hyperparameter Tuning
 Use the following scripts to tune hyperparameters:
 
 ```run_lr.sh ```\
