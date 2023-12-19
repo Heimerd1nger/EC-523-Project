@@ -124,16 +124,17 @@ if __name__ == '__main__':
     lr = 0.1
     momentum = 0.9
     weight_decay = 5e-4
-    # net = resnet18(weights=None, num_classes=n_class)
-    # net.to(DEVICE)
-    # net  = train_model(net, train_loader, val_loader, epochs)
+    net = resnet18(weights=None, num_classes=n_class)
+    net.to(DEVICE)
+    net  = train_model(net, train_loader, val_loader, epochs)
 
-    # checkpoint_path = f"checkpoints/pre-train-model_epoch_{epochs}_lr_{lr}_momentum_{momentum}_weightdecay_{weight_decay}.pth"
-    # os.makedirs(os.path.dirname(checkpoint_path), exist_ok=True)
-    # torch.save(net.state_dict(), checkpoint_path)
-    # print(f"Checkpoint performance, Retain_loader Accuracy: {calculate_accuracy(net,retain_loader):.2f}%, forget_loader Accuracy: {calculate_accuracy(net,forget_loader):.2f}%, Test_loader Accuracy: {calculate_accuracy(net,test_loader):.2f}%")
+    checkpoint_path = f"checkpoints/pre-train-model_epoch_{epochs}_lr_{lr}_momentum_{momentum}_weightdecay_{weight_decay}.pth"
+    os.makedirs(os.path.dirname(checkpoint_path), exist_ok=True)
+    torch.save(net.state_dict(), checkpoint_path)
+    print(f"Checkpoint performance, Retain_loader Accuracy: {calculate_accuracy(net,retain_loader):.2f}%, forget_loader Accuracy: {calculate_accuracy(net,forget_loader):.2f}%, Test_loader Accuracy: {calculate_accuracy(net,test_loader):.2f}%")
 
-    # print(f"Pre-trained Checkpoint saved to {checkpoint_path}")
+    print(f"Pre-trained Checkpoint saved to {checkpoint_path}")
+    
     retrain_net = resnet18(weights=None, num_classes=n_class)
     retrain_net.to(DEVICE)
     retrain_net = train_model(retrain_net,retain_loader, val_loader,epochs)
