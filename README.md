@@ -1,7 +1,7 @@
 # EC-523 Project: Enhancing the SCRUB Model
 
 ## Introduction
-This repository contains the re-implementation and enhancement of the SCalable Remembering and Unlearning unBound (SCRUB) model. The SCRUB model represents a novel approach in [briefly describe the main function or advantage of the model]. This project aims to [state the objectives of your enhancements or what aspects of the SCRUB model you focused on].
+This repository contains the re-implementation and enhancement of the SCalable Remembering and Unlearning unBound (SCRUB) model. 
 
 ## Prerequisites
 To install the prerequsites librarys run
